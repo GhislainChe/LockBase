@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LockBase - Secure Account Storage</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-vault"></i>
+                    <span>LockBase</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#" class="nav-link active" data-page="home">Home</a></li>
+                        <li><a href="#" class="nav-link" data-page="favorites">Favorites</a></li>
+                    </ul>
+                </nav>
+                <div class="search-bar">
+                    <input type="text" id="search-input" placeholder="Search accounts...">
+                    <button id="search-btn"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <!-- Home Page -->
+            <div id="home-page" class="page active">
+                <div class="page-header">
+                    <h1 class="page-title">My Accounts</h1>
+                    <button id="add-account-btn" class="btn">
+                        <i class="fas fa-plus"></i> Add Account
+                    </button>
+                </div>
+
+                <div class="filter-sort-bar">
+                    <div class="filter-group">
+                        <label for="filter-type">Filter by:</label>
+                        <select id="filter-type">
+                            <option value="all">All Types</option>
+                            <option value="bank">Bank</option>
+                            <option value="email">Email</option>
+                            <option value="social">Social Media</option>
+                            <option value="shopping">Shopping</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="sort-group">
+                        <label for="sort-by">Sort by:</label>
+                        <select id="sort-by">
+                            <option value="name">Name</option>
+                            <option value="type">Type</option>
+                            <option value="date">Date Added</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="accounts-container" class="account-grid">
+                    <!-- Accounts will be dynamically added here -->
+                </div>
+            </div>
+
+            <!-- Favorites Page -->
+            <div id="favorites-page" class="page">
+                <div class="page-header">
+                    <h1 class="page-title">Favorite Accounts</h1>
+                </div>
+
+                <div id="favorites-container" class="account-grid">
+                    <!-- Favorite accounts will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add/Edit Account Modal -->
+    <div id="account-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modal-title">Add New Card/Coupon</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="account-form">
+                    <input type="hidden" id="account-id">
+                    
+                    <!-- Card/Coupon Type -->
+                    <div class="form-group">
+                        <label for="card-type">Type</label>
+                        <select id="card-type" class="form-control" required>
+                            <option value="">Select Type</option>
+                            <option value="giftcard">Gift Card</option>
+                            <option value="coupon">Coupon</option>
+                            <option value="promo">Promo Code</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="card-name">Card/Coupon Name</label>
+                        <input type="text" id="card-name" class="form-control" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group half-width">
+                            <label for="card-code">Code</label>
+                            <input type="text" id="card-code" class="form-control" required>
+                        </div>
+                        <div class="form-group half-width">
+                            <label for="card-currency">Currency</label>
+                            <select id="card-currency" class="form-control">
+                                <option value="USD">USD ($)</option>
+                                <option value="EUR">EUR (€)</option>
+                                <option value="GBP">GBP (£)</option>
+                                <option value="JPY">JPY (¥)</option>
+                                <option value="CAD">CAD (C$)</option>
+                                <option value="AUD">AUD (A$)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group half-width">
+                            <label for="card-value">Value</label>
+                            <div class="input-group">
+                                <input type="number" id="card-value" class="form-control" step="0.01" min="0">
+                                <span class="input-group-text" id="value-suffix">$</span>
+                            </div>
+                        </div>
+                        <div class="form-group half-width">
+                            <label for="card-expiry">Expiry Date</label>
+                            <input type="date" id="card-expiry" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="card-email">Associated Email</label>
+                        <input type="email" id="card-email" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="card-website">Website/Store</label>
+                        <input type="url" id="card-website" class="form-control" placeholder="https://">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="card-terms">Terms & Conditions</label>
+                        <textarea id="card-terms" class="form-control" rows="2"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="card-notes">Notes</label>
+                        <textarea id="card-notes" class="form-control" rows="2"></textarea>
+                    </div>
+
+                    <div class="form-group form-check">
+                        <input type="checkbox" id="card-active" class="form-check-input" checked>
+                        <label class="form-check-label" for="card-active">Active</label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancel-btn">Cancel</button>
+                <button class="btn" id="save-btn">Save Card/Coupon</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="logo">
+                    <i class="fas fa-vault"></i>
+                    <span>LockBase</span>
+                </div>
+                <p>Secure storage for all your account details</p>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Contact Us</a>
+                </div>
+                <p class="copyright">&copy; 2025 LockBase. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+        <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmation-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Confirm Action</h3>
+            <p id="confirmation-message">Are you sure you want to perform this action?</p>
+            <div class="modal-actions">
+                <button id="confirm-action" class="btn btn-danger">Confirm</button>
+                <button id="cancel-action" class="btn btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
